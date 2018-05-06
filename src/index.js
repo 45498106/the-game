@@ -3,6 +3,8 @@ const path = require("path");
 const tmx = require("tmx-parser");
 PIXI.extras.TiledMap = require("./Tiled/TiledMap");
 
+const events = require("./Events");
+
 const Character = require("./Character");
 const Entities = require("./Entities");
 const Game = require("./Game");
@@ -73,7 +75,7 @@ loader
             tmpCoin.visible = false;
         }
 
-        let game = new Game(map, character, entities);
+        let game = new Game(map, character, entities, events);
 
         app.ticker.add(function() {
             game.update();
@@ -81,21 +83,22 @@ loader
         });
 
         app.renderer.plugins.interaction.on("mousedown", function(event) {
-            const { x, y } = event.data.getLocalPosition(app.stage);
-            const characterPosition = character.getPosition();
-            console.log(x, y, characterPosition.x, characterPosition.y);
-            console.log(
-                getVectorBetweenTwoPointsAngle(
-                    {
-                        x,
-                        y
-                    },
-                    {
-                        x: characterPosition.x,
-                        y: characterPosition.y
-                    }
-                )
-            );
+            // const { x, y } = event.data.getLocalPosition(app.stage);
+            // const characterPosition = character.getPosition();
+            // console.log(x, y, characterPosition.x, characterPosition.y);
+            // console.log(
+            //     getVectorBetweenTwoPointsAngle(
+            //         {
+            //             x,
+            //             y
+            //         },
+            //         {
+            //             x: characterPosition.x,
+            //             y: characterPosition.y
+            //         }
+            //     )
+            // );
+            events.emit("shot", event);
         });
 
         app.start();

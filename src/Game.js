@@ -1,5 +1,5 @@
 module.exports = class Game {
-    constructor(map, character, entities) {
+    constructor(map, character, entities, events) {
         this.character = character;
         this.entities = entities;
         this.map = map;
@@ -7,6 +7,8 @@ module.exports = class Game {
         // Temporal lines
         this.entities.hearts.forEach(heart => heart.playAnimation());
         this.entities.coins.forEach(coin => coin.playAnimation());
+
+        events.addListener("shot", () => console.log("Let's fire..."))
     }
 
     update() {
